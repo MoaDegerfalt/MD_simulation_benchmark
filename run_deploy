@@ -1,0 +1,22 @@
+#!/bin/bash
+  
+#SBATCH -A NAISS2023-3-31
+#SBATCH -t 00:30:00
+#SBATCH -J nequip
+
+#Number of gpus
+#SBATCH -N 1
+#SBATCH --gpus-per-node=A100:1
+
+ml load PyTorch/2.1.2-foss-2023a-CUDA-12.1.1
+
+# Using OpenMP threads seems to improve the performance
+export OMP_NUM_THREADS=1
+export TF_INTRA_OP_PARALLELISM_THREADS=1
+export TF_INTER_OP_PARALLELISM_THREADS=1
+export KMP_AFFINITY=granularity=fine,noverbose,respect,compact,0,0
+
+# Skapar en in.lammps_{index} fil, tar namnet påaktuellt svep och skapar en fil för varje nummer i --array=1-100 ex.  
+python3 create_in_lammps.py 'sweep_r_max_' $SLURM_ARRAY_TASK_ID
+
+./lmp -in in.lammps_${SLURM_ARRAY_TASK_ID}
