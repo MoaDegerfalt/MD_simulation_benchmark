@@ -32,5 +32,5 @@ cd ..
 ```
 
 ```
-apptainer exec python3 save_to_wandbAI.py {slurm code} 1 100
+apptainer exec {container.sif} python3 save_to_wandbAI.py {slurm code} 1 100
 ```
