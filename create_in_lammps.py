@@ -1,7 +1,7 @@
 import sys
 
 
-# This script is used in "run_deploy" to create "in.lammps_{index}" files for MD simulation. 
+# This script is used in "run_MD_simulation" to create "in.lammps_{index}" files for MD simulation. 
 # Namn is the name of the specific run ex "sweep_2__" 
 namn = sys.argv[1]
 i = sys.argv[2]
