@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#SBATCH -A NAISS2023-3-31 -p alvis
+#SBATCH -N 1 --gpus-per-node=T4:1 
+#SBATCH -t 0-02:00:00
+
+module load intel
+
+apptainer exec {container.sif} {commands to build} /path/to/folder/with/model  /path/to/saved/deployed_model/deployed_{name}_${SLURM_ARRAY_TASK_ID}.pth
+
+# sbatch --array=1-100 run_deploy
+# ${SLURM_ARRAY_TASK_ID} will be the number 1-100 and 100 models are deployed. 
+
+# Example of a nequip model being deployed and the deployed model placed in a direcrory "lammps/models/"
+# apptainer exec nequip.sif nequip-deploy build --train-dir /mimer/NOBACKUP/groups/ltu-fy/Moa/results/atomic_energy_newdata/sweep_r_max_${SLURM_ARRAY_TASK_ID} /mimer/NOBACKUP/groups/ltu-fy/Moa/lammps/models/deployed_sweep_r_max_${SLURM_ARRAY_TASK_ID}.pth
